@@ -5,7 +5,7 @@
  * Date: 8/8/2017 AD
  * Time: 5:40 PM
  */
-namespace Blog;
+namespace Comment;
 
 return array(
     'router' => array(
@@ -14,12 +14,12 @@ return array(
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
             // using the path /blog/:controller/:action
-            'blog' => array(
+            'comment' => array(
                 'type'    => 'Literal',
                 'options' => array(
-                    'route'    => '/blog',
+                    'route'    => '/comment',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'Blog\Controller',
+                        '__NAMESPACE__' => 'Comment\Controller',
                         'controller'    => 'Index',
                         'action'        => 'index',
                     ),
@@ -44,7 +44,7 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Blog\Controller\Index' => Controller\IndexController::class
+            'Comment\Controller\Index' => Controller\IndexController::class
         ),
     ),
     'view_manager' => array(

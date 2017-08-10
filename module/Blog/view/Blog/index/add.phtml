@@ -1,0 +1,36 @@
+<h1> Add Blog Post </h1>
+
+<?php if(isset($this->success) && $this->success == true) : ?>
+    <div class="alert alert-success"><strong>Success</strong> the blog post has been added.</div>
+
+<?php endif;
+
+/** $var \Zend\Form\Form $form */
+
+$form = $this->form;
+$form->prepare();
+echo $this->form()->openTag($form);
+
+?>
+
+
+<div class = "form-group">
+    <?php echo $this->formRow($form->get('title')); ?>
+</div>
+
+<div class = "form-group">
+    <?php echo $this->formRow($form->get('slug')); ?>
+</div>
+
+<div class = "form-group">
+    <?php echo $this->formRow($form->get('content')); ?>
+</div>
+
+<div class = "form-group">
+    <?php echo $this->formRow($form->get('category')); ?>
+</div>
+
+<?php echo $this->formSubmit($form->get('submit')); ?>
+
+
+<?php echo $this->form()->closeTag(); ?>

@@ -2,24 +2,23 @@
 /**
  * Created by PhpStorm.
  * User: chetta
- * Date: 8/8/2017 AD
- * Time: 5:40 PM
+ * Date: 8/9/2017 AD
+ * Time: 1:05 PM
  */
-namespace Blog;
-
+namespace About;
 return array(
     'router' => array(
         'routes' => array(
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
-            // using the path /blog/:controller/:action
-            'blog' => array(
+            // using the path /about/:controller/:action
+            'about' => array(
                 'type'    => 'Literal',
                 'options' => array(
-                    'route'    => '/blog',
+                    'route'    => '/about',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'Blog\Controller',
+                        '__NAMESPACE__' => 'About\Controller',
                         'controller'    => 'Index',
                         'action'        => 'index',
                     ),
@@ -44,7 +43,7 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Blog\Controller\Index' => Controller\IndexController::class
+            'About\Controller\Index' => Controller\IndexController::class
         ),
     ),
     'view_manager' => array(

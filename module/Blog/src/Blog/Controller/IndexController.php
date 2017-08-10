@@ -9,8 +9,11 @@
 namespace Blog\Controller;
 
 
+use Blog\Entity\Post;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Blog\Form\Add;
+use Blog\InputFilter\AddPost;
 
 class IndexController extends AbstractActionController
 {
@@ -20,5 +23,31 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
         return new ViewModel();
+    }
+
+    public function addAction()
+    {
+        $form = new Add();
+        $valiables = array('form' => $form);
+
+        if($this->request->isPost()) {
+            $blogPost = new Post();
+            $form->bind($blogPost);
+
+            $form->setInputFilter(new AddPost());
+            $form->setData($this->request->getPost());
+
+            if($form->isValid()){
+                /**
+                 * @var |Blog|Service|BlogService $blogService
+                 */
+                $blogService = $this->getServiceLocator()->get('Blog\Service\BlogService');
+                $blogService->save($blogPost);
+                $valiables['success'] = true;
+
+
+            }
+        }
+        return new ViewModel($valiables);
     }
 }
