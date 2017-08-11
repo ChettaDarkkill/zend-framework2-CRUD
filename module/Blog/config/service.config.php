@@ -8,19 +8,25 @@
 namespace Blog;
 return array(
 
-    'factories' => array(
-        'Blog\Repository\PostRepository' => function(\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator) {
-            $postRepository = new \Blog\Repository\PostRepositoryImpl();
-            $postRepository->setDbAdapter($serviceLocator->get('Zend\Db\Adapter\Adapter'));
+    'invokables' => array(
+        'Blog\Repository\PostRepository' => 'Blog\Repository\PostRepositoryImpl',
+    ),
 
-            return $postRepository;
-        },
+    'factories' => array(
         'Blog\Service\BlogService' => function(\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator){
             $blogService = new \Blog\Service\BlogServiceImpl();
             $blogService->setPostRepository($serviceLocator->get('Blog\Repository\PostRepository'));
 
             return $blogService;
-        }
+        },
+
     ),
 
+    'initializers' => array(
+        function($instance, \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator){
+            if($instance instanceof \Zend\Db\Adapter\AdapterAwareInterface){
+                $instance->setDbAdapter($serviceLocator->get('Zend\Db\Adapter\Adapter'));
+            }
+        }
+    )
 );

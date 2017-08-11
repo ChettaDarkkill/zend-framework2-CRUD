@@ -22,7 +22,14 @@ class IndexController extends AbstractActionController
      */
     public function indexAction()
     {
-        return new ViewModel();
+        $variables = array();
+        /**
+         * @var \Blog\Service\BlogService $blogService
+         */
+        $blogService = $this->getServiceLocator()->get('Blog\Service\BlogService');
+        $variables['posts'] = $blogService->fetchAll();
+
+        return new ViewModel($variables);
     }
 
     public function addAction()
@@ -44,7 +51,6 @@ class IndexController extends AbstractActionController
                 $blogService = $this->getServiceLocator()->get('Blog\Service\BlogService');
                 $blogService->save($blogPost);
                 $valiables['success'] = true;
-
 
             }
         }

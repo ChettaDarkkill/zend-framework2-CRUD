@@ -43,6 +43,10 @@ class BlogServiceImpl implements BlogService
         $this->postRepository = $postRepository;
     }
 
+    public function fetchAll()
+    {
+        return $this->postRepository->fetchALl();
+    }
 
 
 }

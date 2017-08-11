@@ -8,10 +8,24 @@
 
 namespace Blog\Repository;
 
-
+use Application\Repository\RepositoryInterface;
 use Blog\Entity\Post;
 
-interface PostRepository
+interface PostRepository extends RepositoryInterface
 {
+    /**
+     *
+     * Saves a blog post
+     *
+     * @param Post $post
+     *
+     * @return void
+     */
     public function save(Post $post);
+
+    /**
+     * @return post[]
+     */
+    public  function fetchALl();
+
 }

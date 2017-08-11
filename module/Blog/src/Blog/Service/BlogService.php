@@ -19,4 +19,12 @@ interface BlogService
      * @return mixed
      */
     public function save(Post $post);
+
+    /**
+     *
+     * Fetch all blog posts
+     *
+     * @return mixed
+     */
+    public function fetchAll();
 }

@@ -9,18 +9,21 @@
 namespace Blog\Repository;
 
 
+use Blog\Entity\Hydrator\CategoryHydrator;
+use Blog\Entity\Hydrator\PostHydrator;
 use Blog\Entity\Post;
+use Zend\Db\Adapter\AdapterAwareTrait;
+use Zend\Db\ResultSet\HydratingResultSet;
+use Zend\Stdlib\Hydrator\Aggregate\AggregateHydrator;
 
 class PostRepositoryImpl implements PostRepository
 {
-    /**
-     * @var \Zend\Db\Adapter\Adapter $dbAdapter
-     */
-    protected $dbAdapter;
+
+    use AdapterAwareTrait;
 
     public function save(Post $post)
     {
-        $sql = new \Zend\Db\Sql\Sql($this->dbAdapter);
+        $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $insert = $sql->insert()
             ->values(array(
                 'title' => $post->getTitle(),
@@ -35,19 +38,49 @@ class PostRepositoryImpl implements PostRepository
     }
 
     /**
-     * @return \Zend\Db\Adapter\Adapter
+     * @return Post[]
      */
-    public function getDbAdapter()
+    public function fetchALl()
     {
-        return $this->dbAdapter;
+        $sql = new \Zend\Db\Sql\Sql($this->adapter);
+        $select = $sql->select();
+        $select->columns(array(
+            'id',
+            'title',
+            'slug',
+            'content',
+            'created',
+        ))
+        ->from(array('p' => 'post'))
+            ->join(
+                array('c' => 'category'), //table name
+                'c.id = p.category_id', //condition
+                array('category_id' => 'id' , 'name', 'category_slug' => 'slug') //column
+            )
+            ->order('p.id DESC');
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        $hydrator = new AggregateHydrator();
+
+        $hydrator->add(new PostHydrator());
+        $hydrator->add(new CategoryHydrator());
+
+        $resultSet = new HydratingResultSet($hydrator, new Post());
+        $resultSet->initialize($result);
+        $posts = array();
+
+        foreach($resultSet as $post){
+            /**
+             * @var \Blog\Entity\Post $post
+             */
+            $posts[] = $post;
+        }
+
+        return $posts;
+
     }
 
-    /**
-     * @param \Zend\Db\Adapter\Adapter $dbAdapter
-     */
-    public function setDbAdapter($dbAdapter)
-    {
-        $this->dbAdapter = $dbAdapter;
-    }
 
 }
