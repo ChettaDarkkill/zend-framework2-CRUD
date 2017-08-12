@@ -17,9 +17,8 @@ class IndexController extends AbstractActionController
         /**
          * @var \Blog\Service\BlogService $blogService
          */
-        $blogService = $this->getServiceLocator()->get('Blog\Service\BlogService');
+        $blogService = @$this->getServiceLocator()->get('Blog\Service\BlogService');
         $variables['paginator'] = $blogService->fetch($this->params()->fromRoute('page'));
-
         return new ViewModel($variables);
     }
 
@@ -37,7 +36,7 @@ class IndexController extends AbstractActionController
                 /**
                  * @var \Blog\Service\BlogService $blogService
                  */
-                $blogService = $this->getServiceLocator()->get('Blog\Service\BlogService');
+                $blogService = @$this->getServiceLocator()->get('Blog\Service\BlogService');
                 $blogService->save($blogPost);
                 $variables['success'] = true;
             }

@@ -1,5 +1,4 @@
 vendor/
 .idea/
-config/autoload/global.php
 composer.lock
 
