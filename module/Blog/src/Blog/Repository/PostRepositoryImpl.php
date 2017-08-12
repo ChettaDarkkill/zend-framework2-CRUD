@@ -40,7 +40,7 @@ class PostRepositoryImpl implements PostRepository
     /**
      * @return Post[]
      */
-    public function fetchALl()
+    public function fetch($page)
     {
         $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $select = $sql->select();
@@ -59,8 +59,6 @@ class PostRepositoryImpl implements PostRepository
             )
             ->order('p.id DESC');
 
-        $statement = $sql->prepareStatementForSqlObject($select);
-        $result = $statement->execute();
 
         $hydrator = new AggregateHydrator();
 
@@ -68,17 +66,13 @@ class PostRepositoryImpl implements PostRepository
         $hydrator->add(new CategoryHydrator());
 
         $resultSet = new HydratingResultSet($hydrator, new Post());
-        $resultSet->initialize($result);
-        $posts = array();
+        $paginatorAdapter = new \Zend\Paginator\Adapter\DbSelect($select, $this->adapter, $resultSet);
+        $paginator = new \Zend\Paginator\Paginator($paginatorAdapter);
+        $paginator->setCurrentPageNumber($page);
+        $paginator->setItemCountPerPage(5);
 
-        foreach($resultSet as $post){
-            /**
-             * @var \Blog\Entity\Post $post
-             */
-            $posts[] = $post;
-        }
+        return $paginator;
 
-        return $posts;
 
     }
 

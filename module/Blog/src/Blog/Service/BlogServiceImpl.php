@@ -43,9 +43,14 @@ class BlogServiceImpl implements BlogService
         $this->postRepository = $postRepository;
     }
 
-    public function fetchAll()
+    /**
+     * @param int $page
+     *
+     * @return \Zend\Paginator\Paginator
+     */
+    public function fetch($page)
     {
-        return $this->postRepository->fetchALl();
+        return $this->postRepository->fetch($page);
     }
 
 

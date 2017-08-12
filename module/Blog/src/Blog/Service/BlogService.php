@@ -21,10 +21,9 @@ interface BlogService
     public function save(Post $post);
 
     /**
+     * @param $page int
      *
-     * Fetch all blog posts
-     *
-     * @return mixed
+     * @return \Zend\Paginator\Paginator
      */
-    public function fetchAll();
+    public function fetch($page);
 }

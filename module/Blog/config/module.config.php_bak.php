@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Created by PhpStorm.
+ * User: chetta
+ * Date: 8/8/2017 AD
+ * Time: 5:40 PM
+ */
 namespace Blog;
 
 return array(
@@ -10,14 +15,14 @@ return array(
             // module. Simply drop new controllers in, and you can access them
             // using the path /blog/:controller/:action
             'blog' => array(
-                'type'    => 'Segment',
+                'type'    => 'Literal',
                 'options' => array(
                     'route'    => '/blog',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Blog\Controller',
                         'controller'    => 'Index',
                         'action'        => 'index',
-                        'page'			=> 1,
+                        'page'          => 1,
                     ),
                 ),
                 'may_terminate' => true,
@@ -34,31 +39,30 @@ return array(
                             ),
                         ),
                     ),
-                    
+
                     'paged' => array(
                         'type' => 'Segment',
                         'options' => array(
-                            'route' => '/page/:page',
+                            'route' => 'page/:page',
                             'constraints' => array(
-                                'page' => '[0-9]+',
+                                'page' => '[0-9]',
                             ),
                             'defaults' => array(
                                 'controller' => 'Blog\Controller\Index',
                                 'action' => 'index',
-                            ),
-                        ),
-                    ),
+                            )
+                        )
+                    )
+
                 ),
             ),
         ),
     ),
-
     'controllers' => array(
         'invokables' => array(
             'Blog\Controller\Index' => Controller\IndexController::class
         ),
     ),
-
     'view_manager' => array(
         'template_path_stack' => array(
             __DIR__ . '/../view',
